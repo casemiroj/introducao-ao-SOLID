@@ -44,7 +44,8 @@
                   "type": "object",
                   "properties": {
                     "id": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "uuid"
                     },
                     "admin": {
                       "type": "boolean"
@@ -61,6 +62,14 @@
                     "updated_at": {
                       "type": "string"
                     }
+                  },
+                  "example": {
+                    "id": "11bf831b-d31c-472e-a0d5-a5c75b748c09",
+                    "admin": true,
+                    "name":"João Casemiro",
+                    "email": "joaocasemiro@email.com",
+                    "created_at": "2021-10-01T20:31:00.954Z",
+                    "updated_at": "2021-10-01T20:31:27.289Z"
                   }
                 }
               }
@@ -76,6 +85,9 @@
                     "error": {
                       "type": "string"
                     }
+                  },
+                  "example": {
+                    "error": "Email is already taken"
                   }
                 }
               }
@@ -87,6 +99,17 @@
         "tags": ["Users"],
         "summary": "Listagem de usuários",
         "description": "Listagem de todos os usuários somente se quem fez a requisição é admin",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Sucesso",
@@ -98,7 +121,8 @@
                     "type": "object",
                     "properties": {
                       "id": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "uuid"
                       },
                       "admin": {
                         "type": "boolean"
@@ -115,6 +139,14 @@
                       "updated_at": {
                         "type": "string"
                       }
+                    },
+                    "example": {
+                      "id": "11bf831b-d31c-472e-a0d5-a5c75b748c09",
+                      "admin": true,
+                      "name":"João Casemiro",
+                      "email": "joaocasemiro@email.com",
+                      "created_at": "2021-10-01T20:31:00.954Z",
+                      "updated_at": "2021-10-01T20:31:27.289Z"
                     }
                   }
                 }
@@ -131,6 +163,165 @@
                     "error": {
                       "type": "string"
                     }
+                  },
+                  "example": {
+                    "error": "User not authorized"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags":["Users"],
+        "summary":"Listagem de usuário",
+        "description": "Listagem de apenas um usuário, passando o id como parametro",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "description": "ID do usuário que deseja pesquisar",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "id": "11bf831b-d31c-472e-a0d5-a5c75b748c09",
+                    "admin": true,
+                    "name":"João Casemiro",
+                    "email": "joaocasemiro@email.com",
+                    "created_at": "2021-10-01T20:31:00.954Z",
+                    "updated_at": "2021-10-01T20:31:27.289Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User not found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+    },
+    "/users/{user_id}/admin": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Transformar em admin",
+        "description": "Transforma usuário padrão em admin",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type":"string",
+              "format":"uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "id": "11bf831b-d31c-472e-a0d5-a5c75b748c09",
+                    "admin": true,
+                    "name":"João Casemiro",
+                    "email": "joaocasemiro@email.com",
+                    "created_at": "2021-10-01T20:31:00.954Z",
+                    "updated_at": "2021-10-01T20:31:27.289Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User not found"
                   }
                 }
               }
